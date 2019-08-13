@@ -1,0 +1,557 @@
+> library(dplyr)
+> exam <- read.csv("csv_exam.csv")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'csv_exam.csv': No such file or directory
+> setwd("C:/Users/배형중/Desktop/R 수업/Data")
+> exam <- read.csv("csv_exam.csv")
+> head(exam)
+  id class math english science
+1  1     1   50      98      50
+2  2     1   60      97      60
+3  3     1   45      86      78
+4  4     1   30      98      58
+5  5     2   25      80      65
+6  6     2   50      89      98
+> exam
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   5     2   25      80      65
+6   6     2   50      89      98
+7   7     2   80      90      45
+8   8     2   90      78      25
+9   9     3   20      98      15
+10 10     3   50      98      45
+11 11     3   65      65      65
+12 12     3   45      85      32
+13 13     4   46      98      65
+14 14     4   48      87      12
+15 15     4   75      56      78
+16 16     4   58      98      65
+17 17     5   65      68      98
+18 18     5   80      78      90
+19 19     5   89      68      87
+20 20     5   78      83      58
+> exam %>% filter(class==1)
+  id class math english science
+1  1     1   50      98      50
+2  2     1   60      97      60
+3  3     1   45      86      78
+4  4     1   30      98      58
+> exam %>% filter(class==2)
+  id class math english science
+1  5     2   25      80      65
+2  6     2   50      89      98
+3  7     2   80      90      45
+4  8     2   90      78      25
+> exam %>% filter(class!=1)
+   id class math english science
+1   5     2   25      80      65
+2   6     2   50      89      98
+3   7     2   80      90      45
+4   8     2   90      78      25
+5   9     3   20      98      15
+6  10     3   50      98      45
+7  11     3   65      65      65
+8  12     3   45      85      32
+9  13     4   46      98      65
+10 14     4   48      87      12
+11 15     4   75      56      78
+12 16     4   58      98      65
+13 17     5   65      68      98
+14 18     5   80      78      90
+15 19     5   89      68      87
+16 20     5   78      83      58
+> exam %>% filter(class!=3)
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   5     2   25      80      65
+6   6     2   50      89      98
+7   7     2   80      90      45
+8   8     2   90      78      25
+9  13     4   46      98      65
+10 14     4   48      87      12
+11 15     4   75      56      78
+12 16     4   58      98      65
+13 17     5   65      68      98
+14 18     5   80      78      90
+15 19     5   89      68      87
+16 20     5   78      83      58
+> exam %>% filter(math>50)
+   id class math english science
+1   2     1   60      97      60
+2   7     2   80      90      45
+3   8     2   90      78      25
+4  11     3   65      65      65
+5  15     4   75      56      78
+6  16     4   58      98      65
+7  17     5   65      68      98
+8  18     5   80      78      90
+9  19     5   89      68      87
+10 20     5   78      83      58
+> exam %>% filter(english>=80)
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   5     2   25      80      65
+6   6     2   50      89      98
+7   7     2   80      90      45
+8   9     3   20      98      15
+9  10     3   50      98      45
+10 12     3   45      85      32
+11 13     4   46      98      65
+12 14     4   48      87      12
+13 16     4   58      98      65
+14 20     5   78      83      58
+> a <- {exam %>% filter(english>=80)}
+> a
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   5     2   25      80      65
+6   6     2   50      89      98
+7   7     2   80      90      45
+8   9     3   20      98      15
+9  10     3   50      98      45
+10 12     3   45      85      32
+11 13     4   46      98      65
+12 14     4   48      87      12
+13 16     4   58      98      65
+14 20     5   78      83      58
+> exam %>% filter(class==1 & math >= 80)
+[1] id      class   math    english science
+<0 행> <또는 row.names의 길이가 0입니다>
+> exam %>% filter(class == 1 & math >= 80)
+[1] id      class   math    english science
+<0 행> <또는 row.names의 길이가 0입니다>
+> 
+> exam %>% filter(class == 1 & math >= 50)
+  id class math english science
+1  1     1   50      98      50
+2  2     1   60      97      60
+> exam %>% filter(class == 2 | english >= 90)
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   4     1   30      98      58
+4   5     2   25      80      65
+5   6     2   50      89      98
+6   7     2   80      90      45
+7   8     2   90      78      25
+8   9     3   20      98      15
+9  10     3   50      98      45
+10 13     4   46      98      65
+11 16     4   58      98      65
+> exam %>% filter(class == 1 | class == 3 | class == 5)
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   9     3   20      98      15
+6  10     3   50      98      45
+7  11     3   65      65      65
+8  12     3   45      85      32
+9  17     5   65      68      98
+10 18     5   80      78      90
+11 19     5   89      68      87
+12 20     5   78      83      58
+> exam %>% filter(class %in% c(1,3,5))
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   9     3   20      98      15
+6  10     3   50      98      45
+7  11     3   65      65      65
+8  12     3   45      85      32
+9  17     5   65      68      98
+10 18     5   80      78      90
+11 19     5   89      68      87
+12 20     5   78      83      58
+> class1 <- exam %>% filter(class == 1)
+> class2 <- exam %>% filter(class == 2)
+> class1
+  id class math english science
+1  1     1   50      98      50
+2  2     1   60      97      60
+3  3     1   45      86      78
+4  4     1   30      98      58
+> mean(class1$math)
+[1] 46.25
+> mean(class2$math)
+[1] 61.25
+> mean(class$math)
+Error in class$math : object of type 'builtin' is not subsettable
+> mean(exam$math)
+[1] 57.45
+> mpg <- data.frame(ggplot2 :: mpg)
+> head(mpg)
+  manufacturer model displ year cyl      trans drv cty hwy fl   class
+1         audi    a4   1.8 1999   4   auto(l5)   f  18  29  p compact
+2         audi    a4   1.8 1999   4 manual(m5)   f  21  29  p compact
+3         audi    a4   2.0 2008   4 manual(m6)   f  20  31  p compact
+4         audi    a4   2.0 2008   4   auto(av)   f  21  30  p compact
+5         audi    a4   2.8 1999   6   auto(l5)   f  16  26  p compact
+6         audi    a4   2.8 1999   6 manual(m5)   f  18  26  p compact
+> x <- mpg %>% filter(displ >=4)
+> mean(x)
+[1] NA
+Warning message:
+In mean.default(x) : 인자가 수치형 또는 논리형이 아니므로 NA를 반환합니다
+> mean(x$hwy)
+[1] 17.98837
+> y <- mpg %>% filter(displ >= 5)
+> mean(y$hwy)
+[1] 18.07895
+> z <- mpg %>% filter(manufacturer == 'audi')
+> w <- mpg %>% filter(manufacturer == 'toyota')
+> mean(z$cty)
+[1] 17.61111
+> mean(w$hwy)
+[1] 24.91176
+> mean(w$cty)
+[1] 18.52941
+> total <- mpg %>% filter(manufacturer %in% c("chevrolet", "ford", "honda"))
+> mean(total$hwy)
+[1] 22.50943
+> exam %>% select(math)
+   math
+1    50
+2    60
+3    45
+4    30
+5    25
+6    50
+7    80
+8    90
+9    20
+10   50
+11   65
+12   45
+13   46
+14   48
+15   75
+16   58
+17   65
+18   80
+19   89
+20   78
+> head(exam %>% select(english))
+  english
+1      98
+2      97
+3      86
+4      98
+5      80
+6      89
+> exam %>% select(class, math, english)
+   class math english
+1      1   50      98
+2      1   60      97
+3      1   45      86
+4      1   30      98
+5      2   25      80
+6      2   50      89
+7      2   80      90
+8      2   90      78
+9      3   20      98
+10     3   50      98
+11     3   65      65
+12     3   45      85
+13     4   46      98
+14     4   48      87
+15     4   75      56
+16     4   58      98
+17     5   65      68
+18     5   80      78
+19     5   89      68
+20     5   78      83
+> exam %>% select(-math)
+   id class english science
+1   1     1      98      50
+2   2     1      97      60
+3   3     1      86      78
+4   4     1      98      58
+5   5     2      80      65
+6   6     2      89      98
+7   7     2      90      45
+8   8     2      78      25
+9   9     3      98      15
+10 10     3      98      45
+11 11     3      65      65
+12 12     3      85      32
+13 13     4      98      65
+14 14     4      87      12
+15 15     4      56      78
+16 16     4      98      65
+17 17     5      68      98
+18 18     5      78      90
+19 19     5      68      87
+20 20     5      83      58
+> exam %>% select(-math, -english)
+   id class science
+1   1     1      50
+2   2     1      60
+3   3     1      78
+4   4     1      58
+5   5     2      65
+6   6     2      98
+7   7     2      45
+8   8     2      25
+9   9     3      15
+10 10     3      45
+11 11     3      65
+12 12     3      32
+13 13     4      65
+14 14     4      12
+15 15     4      78
+16 16     4      65
+17 17     5      98
+18 18     5      90
+19 19     5      87
+20 20     5      58
+> exam %>% filter(class == 1) %>% select(english)
+  english
+1      98
+2      97
+3      86
+4      98
+> exam %>%
++     filter(class == 1) %>% 
++     select(english)
+  english
+1      98
+2      97
+3      86
+4      98
+> exam %>% 
++     select(id,math) %>% 
++     head
+  id math
+1  1   50
+2  2   60
+3  3   45
+4  4   30
+5  5   25
+6  6   50
+> exam %>% 
++     select(id,math) %>% 
++     head(10)
+   id math
+1   1   50
+2   2   60
+3   3   45
+4   4   30
+5   5   25
+6   6   50
+7   7   80
+8   8   90
+9   9   20
+10 10   50
+> exam %>% arrange(math) %>% 
++     head
+  id class math english science
+1  9     3   20      98      15
+2  5     2   25      80      65
+3  4     1   30      98      58
+4  3     1   45      86      78
+5 12     3   45      85      32
+6 13     4   46      98      65
+> exam %>% arrange(desc(math)) %>% 
++     head
+  id class math english science
+1  8     2   90      78      25
+2 19     5   89      68      87
+3  7     2   80      90      45
+4 18     5   80      78      90
+5 20     5   78      83      58
+6 15     4   75      56      78
+> exam %>% arrage(class, math) %>% 
++     head
+Error in arrage(., class, math) : could not find function "arrage"
+> exam %>% arrange(class, math) %>% 
++     head
+  id class math english science
+1  4     1   30      98      58
+2  3     1   45      86      78
+3  1     1   50      98      50
+4  2     1   60      97      60
+5  5     2   25      80      65
+6  6     2   50      89      98
+> exam %>% 
++     mutate(total = math + english + science) %>% 
++     head
+  id class math english science total
+1  1     1   50      98      50   198
+2  2     1   60      97      60   217
+3  3     1   45      86      78   209
+4  4     1   30      98      58   186
+5  5     2   25      80      65   170
+6  6     2   50      89      98   237
+> exam %>% 
++     mutate(total = math + english + science,
++            mean = (math + english + science)/3) %>% 
++     head
+  id class math english science total     mean
+1  1     1   50      98      50   198 66.00000
+2  2     1   60      97      60   217 72.33333
+3  3     1   45      86      78   209 69.66667
+4  4     1   30      98      58   186 62.00000
+5  5     2   25      80      65   170 56.66667
+6  6     2   50      89      98   237 79.00000
+> exam %>% 
++     mutate(test = ifelse(science >= 60, "pass", "fail")) %>% 
++     head
+  id class math english science test
+1  1     1   50      98      50 fail
+2  2     1   60      97      60 pass
+3  3     1   45      86      78 pass
+4  4     1   30      98      58 fail
+5  5     2   25      80      65 pass
+6  6     2   50      89      98 pass
+> exam %>% mutate(total = english + math + science) %>% 
++     arrage(total) %>% 
++     head
+Error in arrage(., total) : could not find function "arrage"
+> exam %>% mutate(total = english + math + science) %>% 
++     +     arrange(total) %>% 
++     +     head
+Error in Ops.data.frame(., arrange(total)) : 
+  ‘+’ only defined for equally-sized data frames
+> exam %>% mutate(total = english + math + science) %>% 
++     arrange(total) %>% 
++     head
+  id class math english science total
+1  9     3   20      98      15   133
+2 14     4   48      87      12   147
+3 12     3   45      85      32   162
+4  5     2   25      80      65   170
+5  4     1   30      98      58   186
+6  8     2   90      78      25   193
+> exam %>% summarise(mean_math = mean(math))
+  mean_math
+1     57.45
+> exam %>% 
++     summarize(mean_math=mean(math),
++               n = n()) %>% 
++     head
+  mean_math  n
+1     57.45 20
+> mpg %>%
++     group_by(manufacturer, drv) %>% 
++     summarise(mean_cty = mean(cty)) %>% 
++     head(10)
+# A tibble: 10 x 3
+# Groups:   manufacturer [5]
+   manufacturer drv   mean_cty
+   <chr>        <chr>    <dbl>
+ 1 audi         4         16.8
+ 2 audi         f         18.9
+ 3 chevrolet    4         12.5
+ 4 chevrolet    f         18.8
+ 5 chevrolet    r         14.1
+ 6 dodge        4         12  
+ 7 dodge        f         15.8
+ 8 ford         4         13.3
+ 9 ford         r         14.8
+10 honda        f         24.4
+> test <- data.frame(id = c(1,2,3,4,5),
++                    midterm = c(60,80,70,90,85))
+> test2 <- data.frame(id = c(1,2,3,4,5),
++                     final = c(70,83,65,95,80))
+> test1
+Error: object 'test1' not found
+> test
+  id midterm
+1  1      60
+2  2      80
+3  3      70
+4  4      90
+5  5      85
+> test2
+  id final
+1  1    70
+2  2    83
+3  3    65
+4  4    95
+5  5    80
+> total <- left_join(test, test2, by = "id")
+> total
+  id midterm final
+1  1      60    70
+2  2      80    83
+3  3      70    65
+4  4      90    95
+5  5      85    80
+> total <- right_join(test, test2, by = "id")
+> total
+  id midterm final
+1  1      60    70
+2  2      80    83
+3  3      70    65
+4  4      90    95
+5  5      85    80
+> total <- full_join(test, test2, by = "id")
+> total
+  id midterm final
+1  1      60    70
+2  2      80    83
+3  3      70    65
+4  4      90    95
+5  5      85    80
+> name <- data.frame(class = c(1,2,3,4,5),
++                    teacher = c("kim", "lee", "park", "choi", "jung"))
+> name
+  class teacher
+1     1     kim
+2     2     lee
+3     3    park
+4     4    choi
+5     5    jung
+> total <- join(test, test2, by = "id")
+Error in join(test, test2, by = "id") : could not find function "join"
+> group_a <- data.frame(id=(1,2,3,4,5),
+Error: unexpected ',' in "group_a <- data.frame(id=(1,"
+>                       test = c(60,70,80,90,85))
+Error: unexpected ')' in "                      test = c(60,70,80,90,85))"
+> group_a <- data.frame(id=c(1,2,3,4,5),
++                       test=c(60,70,80,90,85))
+> group_b <- data.frame(id=c(6,7,8,9,10),
++                       test=c(10,20,30,40,50))
+> group_all <- bind_rows(group_a, group_b)
+> group_all
+   id test
+1   1   60
+2   2   70
+3   3   80
+4   4   90
+5   5   85
+6   6   10
+7   7   20
+8   8   30
+9   9   40
+10 10   50
+> fuel <- data.frame(fl = c("c", "d","e","p","r"),
++                    price_fl=c(2.35,2.38,2.11,2.76,2.22),
++                    stringsAsFactors = F)
+> head(fuel)
+  fl price_fl
+1  c     2.35
+2  d     2.38
+3  e     2.11
+4  p     2.76
+5  r     2.22
+> mpg %>% left_join(mpg, fuel, by="fl")
